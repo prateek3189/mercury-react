@@ -1,8 +1,8 @@
-#Version 1
+# Version 1
 
-##EggHead
+## EggHead
 
-###Framework
+### Framework
 
-#####React
+#### React
 React Community Resources - The Beginner's Guide to ReactJS
