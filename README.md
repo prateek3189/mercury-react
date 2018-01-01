@@ -4,4 +4,4 @@ EggHead - https://egghead.io<br/>
 Framework - https://egghead.io/browse/frameworks<br/>
 React - https://egghead.io/browse/frameworks/react <br/>
 React Community Resources - The Beginner's Guide to ReactJS - https://egghead.io/courses/the-beginner-s-guide-to-reactjs<br/>
-Branch Name - # develop-ve
+Branch Name - <b>develop-ve</b>
