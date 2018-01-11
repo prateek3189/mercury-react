@@ -1,24 +1,36 @@
-class Counter extends React.Component{
+class UserCompany extends React.Component{
     constructor() {
         super();
         this.state = {
-            counter: 0
+            company: 'Unknown'
         }
+    }
+
+    componentDidMount() {
+        axios({
+            url: 'https://api.github.com/prateek3189',
+            method: 'post',
+            data: {
+                query: '{ user(login: "prateek3189") { company } }'
+            },
+            headers: {
+                Authorization: 'bearer e2fc4be8c0e7121f75c92c0ca766744bdf3f7c18'
+            }
+        }).then(response => {
+            this.setState({company: response.data.data.user.company})
+        });
     }
 
     render() {
         return (
-            <button onClick={() => {
-                this.setState({counter: this.state.counter + 1});
-            }}>{this.state.counter}</button>
-
+            <div>{this.state.company}</div>
         );
     }
 }
 
 function renderApp() {
     ReactDOM.render(
-        <Counter />,
+        <UserCompany />,
         document.getElementById('root')
     );
 }
