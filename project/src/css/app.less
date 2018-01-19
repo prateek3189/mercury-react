@@ -1,0 +1,160 @@
+@import "_variable";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    font-family: Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+    color: @primary-blue;
+}
+
+a {
+    color: @primary-blue;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    padding: 0 5px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid @gray9;
+    width: 150px;
+}
+
+button {
+    background: @primary-blue;
+    color: #FFFFFF;
+    border: 1px solid @primary-blue;
+    height: 30px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &.btn-cancel {
+        background: @grayC;
+        border-color: @grayC;
+        color: @primary-blue;
+
+        &:disabled {
+            background: @grayC;
+            cursor: not-allowed;
+            color: @gray9;
+        }
+    }
+
+    &:disabled {
+        background: @secondary-blue;
+        cursor: not-allowed;
+    }
+}
+
+header {
+    padding: 10px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid @primary-blue;
+
+    img {
+        width: 50px;
+        height: 50px;
+    }
+
+    span {
+        color: @primary-blue;
+        font-size: 30px;
+        padding-left: 10px;
+    }
+}
+
+.content-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.main-content {
+    width: 1024px;
+    margin: 10px auto;
+    padding-bottom: 100px;
+}
+
+footer {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    justify-content: center;
+    border-top: 1px solid @primary-blue;
+    padding: 10px;
+    font-size: 16px;
+    color: @primary-blue;
+    background: #FFFFFF;
+}
+
+table {
+    width: 100%;
+    border: 1px solid @primary-blue;
+
+    th, td {
+        padding: 5px;
+        text-align: center;
+    }
+
+    th {
+        background: @primary-blue;
+        color: #FFFFFF;
+    }
+}
+
+td.add-button-td {
+    text-align: left;
+}
+
+.fade {
+    background: #000000;
+    opacity: 0.3;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+}
+
+.popup {
+    position: fixed;
+    z-index: 1000;
+    background: #FFFFFF;
+    width: 600px;
+    height: 500px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 100px;
+}
+
+.login-box {
+    border: 1px solid;
+    width: 350px;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-top: 100px;
+    padding: 20px;
+}
+
+.login-panel {
+    display: flex;
+    margin-bottom: 10px;
+
+    label {
+        width: 100px;
+    }
+}
