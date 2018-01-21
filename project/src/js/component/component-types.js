@@ -8,6 +8,12 @@ module.exports = {
             case 'SignUp':
                 result = require('../login/signup.jsx');
                 break;
+            case 'ForgotPassword':
+                result = require('../login/forgot-password.jsx');
+                break;
+            case 'dashboard':
+                result = require('../dashboard/dashboard.jsx');
+                break;
             default:
                 //nop
                 break;

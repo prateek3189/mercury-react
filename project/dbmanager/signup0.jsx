@@ -7,7 +7,7 @@ import axios from 'axios';
 import swal from 'sweetalert2';
 
 const required = (value) => {
-  if (value && !value.toString().trim().length) {
+  if (!value.toString().trim().length) {
     // We can return string or jsx as the 'error' prop for the validated Component
     return 'require';
   }
@@ -22,7 +22,6 @@ class SignUp extends Component {
 
         this._onLoginClick = this._onLoginClick.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
-        this.formReset = this.formReset.bind(this);
     }
 
     render() {
@@ -37,7 +36,6 @@ class SignUp extends Component {
                             <Input
                                 name="firstName"
                                 onChange={this.onInputChange.bind(this, 'firstName')}
-                                value={this.state.formData.firstName || ''}
                                 type="text"
                                 validations={[required]} />
                             <span className="error-red">*</span>
@@ -48,7 +46,6 @@ class SignUp extends Component {
                         <Input
                             name="lastName"
                             onChange={this.onInputChange.bind(this, 'lastName')}
-                            value={this.state.formData.lastName || ''}
                             type="text" />
                     </div>
                     <div className="login-panel">
@@ -58,7 +55,6 @@ class SignUp extends Component {
                                 name="phoneNumber"
                                 onChange={this.onInputChange.bind(this, 'phoneNumber')}
                                 type="text"
-                                value={this.state.formData.phoneNumber || ''}
                                 validations={[required]} />
                             <span className="error-red">*</span>
                         </div>
@@ -70,7 +66,6 @@ class SignUp extends Component {
                                 name="username"
                                 onChange={this.onInputChange.bind(this, 'username')}
                                 type="text"
-                                value={this.state.formData.username || ''}
                                 validations={[required]} />
                             <span className="error-red">*</span>
                         </div>
@@ -81,8 +76,7 @@ class SignUp extends Component {
                             <Input
                                 name="password"
                                 onChange={this.onInputChange.bind(this, 'password')}
-                                type="password"
-                                value={this.state.formData.password || ''}
+                                type="text"
                                 validations={[required]} />
                             <span className="error-red">*</span>
                         </div>
@@ -93,7 +87,6 @@ class SignUp extends Component {
                             <Input
                                 name="securityQuestion"
                                 onChange={this.onInputChange.bind(this, 'securityQuestion')}
-                                value={this.state.formData.securityQuestion || ''}
                                 type="text"
                                 validations={[required]} />
                             <span className="error-red">*</span>
@@ -105,8 +98,7 @@ class SignUp extends Component {
                             <Input
                                 name="answer"
                                 onChange={this.onInputChange.bind(this, 'answer')}
-                                type="password"
-                                value={this.state.formData.answer || ''}
+                                type="text"
                                 validations={[required]} />
                             <span className="error-red">*</span>
                         </div>
@@ -116,7 +108,7 @@ class SignUp extends Component {
                     </div>
                     <div className="login-panel">
                         <Button type="submit">Sign Up</Button>
-                        <button type="button" className="btn-cancel" onClick={this.formReset}>Reset</button>
+                        <button type="button" className="btn-cancel">Reset</button>
                     </div>
                 </Form>
             </div>
@@ -124,7 +116,7 @@ class SignUp extends Component {
     }
 
     onInputChange(field, event) {
-        let { formData } = this.state;
+        let formData = this.state.formData;
 
         formData[field] = event.target.value;
         this.setState({formData});
@@ -133,30 +125,21 @@ class SignUp extends Component {
     onFormSubmit(event) {
         event.preventDefault();
 
-        let { formData } = this.state;
+        let formData = this.state.formData;
         formData['action'] = 'signup';
 
         axios.post(
             'controller/login-controller.php',
             formData
-        ).then(response => {
+        ).then(function (response) {
             if(response.data === "REQUIRED_ERROR") {
-                swal('Oops...', 'Please enter required fields', 'error');
-            } else if(response.data === "EXISTS_ERROR") {
-                swal('Oops...', 'Username or Phone already exists', 'error');
+                swal('Oops...', 'Please enter required fields', 'error')
             } else {
-                if(!Number.isNaN(response.data)) {
-                    swal('Wow !', 'User added successfully', 'success');
-                    this.props.onComponentChange('Login');
-                }
+                swal('Go Ahead', 'Signup.js: line number 139', 'success');
             }
-        }).catch(error => {
+        }).catch(function (error) {
             console.log(error);
         });
-    }
-
-    formReset() {
-        this.setState({formData: {}});
     }
 
     _onLoginClick() {
