@@ -14,6 +14,18 @@ module.exports = {
             case 'dashboard':
                 result = require('../dashboard/dashboard.jsx');
                 break;
+            case 'MyFriends':
+                result = require('../friends/my-friends.jsx');
+                break;
+            case 'MyTravel':
+                result = require('../travel/my-travel.jsx');
+                break;
+            case 'MyProfile':
+                result = require('../profile/my-profile.jsx');
+                break;
+            case 'MyFriendsList':
+                result = require('../friends/my-friends-list.jsx');
+                break;
             default:
                 //nop
                 break;

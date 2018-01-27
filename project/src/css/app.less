@@ -16,6 +16,10 @@ a {
     color: @primary-blue;
 }
 
+ul {
+    list-style: none;
+}
+
 input[type="text"],
 input[type="number"],
 input[type="file"],
@@ -181,4 +185,43 @@ td.add-button-td {
     color: @red;
     font-weight: bold;
     font-size: 18px;
+}
+
+.tabstrip {
+    display: flex;
+}
+
+.tabstrip ul li{
+    padding: 5px;
+    border: 1px solid @gray6;
+    cursor: pointer;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
+
+.tab-header {
+    width: 250px;
+}
+
+.tab-header li.selected {
+    background: @secondary-blue;
+    color: #FFFFFF;
+}
+
+.tab-content {
+    padding-left: 20px;
+    max-width: 100%;
+}
+
+.search-box {
+    margin-bottom: 10px;
+}
+
+.add-button-box {
+    margin-bottom: 10px;
+
+    button {
+        margin-left: 0;
+    }
 }

@@ -35,7 +35,7 @@ class ContentRenderer extends React.Component {
         }
 
         return (
-            <div className="tab-content">
+            <div>
                 {contentElement}
             </div>
         );

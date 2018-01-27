@@ -39,7 +39,7 @@
                 } else {
                     $table = "users";
                     $columns = array('first_name', 'last_name', 'phone', 'username', 'password', 'security_question', 'answer', 'created_date', 'modified_date');
-                    $values = array($firstName, $lastName, $phoneNumber, $username, $password, $securityQuestion, $answer, $created_date, $modified_date);
+                    $values = array($firstName, $lastName, $phoneNumber, $username, md5($password), $securityQuestion, $answer, $created_date, $modified_date);
                     $userId = $db->insert($table, $columns, $values);
                     echo $userId;die;
                 }
@@ -75,7 +75,7 @@
 
             $select = "*";
             $table = 'users';
-            $where = "username = '".$username."' AND password = '".$password."' AND is_delete='0'";
+            $where = "username = '".$username."' AND password = '".md5($password)."' AND is_delete='0'";
             $userData = $db->get($select, $table, $where);
 
             echo json_encode($userData, JSON_FORCE_OBJECT);die;
@@ -85,7 +85,7 @@
             // Check if user already exists
             $password = isset($_POST['password']) ? $_POST['password'] : '';
             $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : '';
-            $data = array('password'=>$password);
+            $data = array('password'=>md5($password));
             $userData = $db->update('users', $data, "user_id = '$user_id'");
 
             break;
