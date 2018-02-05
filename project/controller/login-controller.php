@@ -9,22 +9,23 @@
 
     switch ($action) {
         case 'signup':
-            $firstName = isset($_POST['firstName']) ? $_POST['firstName'] : '';
-            $lastName = isset($_POST['lastName']) ? $_POST['lastName'] : '';
-            $phoneNumber = isset($_POST['phoneNumber']) ? $_POST['phoneNumber'] : '';
+            $first_name = isset($_POST['first_name']) ? $_POST['first_name'] : '';
+            $last_name = isset($_POST['last_name']) ? $_POST['last_name'] : '';
+            $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
             $username = isset($_POST['username']) ? $_POST['username'] : '';
             $password = isset($_POST['password']) ? $_POST['password'] : '';
-            $securityQuestion = isset($_POST['securityQuestion']) ? $_POST['securityQuestion'] : '';
+            $security_question = isset($_POST['security_question']) ? $_POST['security_question'] : '';
             $answer = isset($_POST['answer']) ? $_POST['answer'] : '';
+            $owner_id = isset($_POST['owner_id']) ? $_POST['owner_id'] : 0;
             $created_date = date("Y-m-d h:i:s");
             $modified_date = date("Y-m-d h:i:s");
 
             if(
-                $firstName == '' ||
-                $phoneNumber == '' ||
+                $first_name == '' ||
+                $phone == '' ||
                 $username == '' ||
                 $password == '' ||
-                $securityQuestion == '' ||
+                $security_question == '' ||
                 $answer == ''
             ) {
                 echo "REQUIRED_ERROR";die;
@@ -32,18 +33,29 @@
                 // Check if user already exists
                 $select = "*";
                 $table = 'users';
-                $where = "username = '".$username."' OR phone = '".$phoneNumber."'";
+                $where = "username = '".$username."' OR phone = '".$phone."'";
                 $userData = $db->get($select, $table, $where);
                 if(count($userData)) {
                     echo "EXISTS_ERROR";die;
                 } else {
                     $table = "users";
-                    $columns = array('first_name', 'last_name', 'phone', 'username', 'password', 'security_question', 'answer', 'created_date', 'modified_date');
-                    $values = array($firstName, $lastName, $phoneNumber, $username, md5($password), $securityQuestion, $answer, $created_date, $modified_date);
+                    $columns = array('first_name', 'last_name', 'phone', 'username', 'password', 'security_question', 'answer', 'owner_id', 'created_date', 'modified_date');
+                    $values = array($first_name, $last_name, $phone, $username, md5($password), $security_question, $answer, $owner_id, $created_date, $modified_date);
                     $userId = $db->insert($table, $columns, $values);
                     echo $userId;die;
                 }
             }
+            break;
+
+        case 'getFriendData':
+            // Check if user already exists
+            $userId = isset($_POST['userId']) ? $_POST['userId'] : '';
+
+            $select = "*";
+            $table = 'users';
+            $where = "user_id = '".$userId."' AND is_active='1' AND is_delete='0'";
+            $userData = $db->get($select, $table, $where);
+            echo json_encode($userData, JSON_FORCE_OBJECT);die;
             break;
 
         case 'checkUsernameExists':

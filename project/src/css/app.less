@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+i {
+    display: block;
+    width: 16px;
+    height: 16px;
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -95,8 +101,6 @@ header {
 }
 
 .main-content {
-    width: 1024px;
-    margin: 10px auto;
     padding-bottom: 100px;
 }
 
@@ -201,27 +205,71 @@ td.add-button-td {
 }
 
 .tab-header {
-    width: 250px;
+    width: 20%;
 }
 
-.tab-header li.selected {
-    background: @secondary-blue;
-    color: #FFFFFF;
+.tab-header li {
+    width: 100%;
+
+    &.selected{
+        background: @primary-blue;
+        color: #FFFFFF;
+    }
 }
 
 .tab-content {
     padding-left: 20px;
-    max-width: 100%;
+    width: 70%;
 }
 
+// Search
 .search-box {
     margin-bottom: 10px;
 }
 
+// Add Button
 .add-button-box {
     margin-bottom: 10px;
 
     button {
         margin-left: 0;
+    }
+}
+
+.add-friend-box {
+    border: 1px solid @gray6;
+
+    h3 {
+        display: flex;;
+        justify-content: center;
+    }
+
+    .friends-form-panel {
+        display: flex;
+        margin-bottom: 10px;
+        justify-content: center;
+
+        label {
+            width: 150px;
+        }
+    }
+}
+
+// Friends List
+.icon-column {
+    display: flex;
+    justify-content: center;
+
+    i {
+        margin-right: 10px;
+    }
+}
+
+.action-tab {
+    display: flex;
+    justify-content: center;
+
+    i {
+        margin: 0 5px;
     }
 }

@@ -34,26 +34,26 @@ class SignUp extends Component {
                         <label>First Name:</label>
                         <div className="required-box">
                             <Input
-                                name="firstName"
-                                onChange={this.onInputChange.bind(this, 'firstName')}
+                                name="first_name"
+                                onChange={this.onInputChange.bind(this, 'first_name')}
                                 type="text"
                                 validations={[required]} />
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="login-panel" name="lastName">
+                    <div className="login-panel" name="last_name">
                         <label>Last Name:</label>
                         <Input
-                            name="lastName"
-                            onChange={this.onInputChange.bind(this, 'lastName')}
+                            name="last_name"
+                            onChange={this.onInputChange.bind(this, 'last_name')}
                             type="text" />
                     </div>
                     <div className="login-panel">
                         <label>Phone #:</label>
                         <div className="required-box">
                             <Input
-                                name="phoneNumber"
-                                onChange={this.onInputChange.bind(this, 'phoneNumber')}
+                                name="phone"
+                                onChange={this.onInputChange.bind(this, 'phone')}
                                 type="text"
                                 validations={[required]} />
                             <span className="error-red">*</span>
@@ -85,8 +85,8 @@ class SignUp extends Component {
                         <label>Security Question:</label>
                         <div className="required-box">
                             <Input
-                                name="securityQuestion"
-                                onChange={this.onInputChange.bind(this, 'securityQuestion')}
+                                name="security_question"
+                                onChange={this.onInputChange.bind(this, 'security_question')}
                                 type="text"
                                 validations={[required]} />
                             <span className="error-red">*</span>

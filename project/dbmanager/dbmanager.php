@@ -65,17 +65,16 @@
     	}
 
         // update a records
-        function update($table, $data, $where) {
+        function update($table, $column, $value, $where) {
             $sql = "UPDATE $table
-    					SET ";
-            if(count($data)) {
-                foreach($data as $col => $val) {
-                    $sql .= "$col = '$val', ";
+                    SET ";
+            if(count($column)) {
+                for($a = 0; $a < count($column); $a ++) {
+                    $sql .= "$column[$a] = '$value[$a]', ";
                 }
             }
             $sql = rtrim($sql, ", ");
             $sql .= " WHERE $where";
-
             echo $result	=	mysql_query($sql);die;
         }
     }

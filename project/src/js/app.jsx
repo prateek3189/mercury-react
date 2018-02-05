@@ -30,12 +30,13 @@ class App extends React.Component {
                     isLogin={this.state.isLogin}
                     userName={this.state.userData && this.state.userData.first_name || ''}
                     doLogOut={this._doLogOut} />
+                <div className="main-content">
                 {this.state.isLogin === "TRUE" ?
                     <ComponentRenderer componentName="dashboard"/>
                 :
                     <Login doLogin={this._doLogin} />
                 }
-
+                </div>
                 <Footer />
             </div>
         );
@@ -44,6 +45,7 @@ class App extends React.Component {
     _doLogin(status, userData) {
         localStorage.setItem('isLogin', status);
         localStorage.setItem('userName', userData.first_name || '');
+        localStorage.setItem('user_id', userData.user_id || '');
         this.setState({isLogin: status, userData});
     }
 

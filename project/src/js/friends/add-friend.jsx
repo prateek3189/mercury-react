@@ -14,24 +14,28 @@ const required = (value) => {
 };
 
 class SignUp extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             formData: {}
         };
 
-        this._onLoginClick = this._onLoginClick.bind(this);
+        this._onFriendsListClick = this._onFriendsListClick.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.formReset = this.formReset.bind(this);
     }
 
+    componentWillMount() {
+        this._getFriendData();
+    }
+
     render() {
         return (
-            <div className="login-box">
+            <div className="add-friend-box">
                 <Form
                     onSubmit={this.onFormSubmit}>
-                    <h3>Sign Up</h3>
-                    <div className="login-panel">
+                    <h3>{this.props.componentData && this.props.componentData.user_id ? 'Edit' : 'Add'} Friend</h3>
+                    <div className="friends-form-panel">
                         <label>First Name:</label>
                         <div className="required-box">
                             <Input
@@ -43,7 +47,7 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="login-panel" name="last_name">
+                    <div className="friends-form-panel" name="last_name">
                         <label>Last Name:</label>
                         <Input
                             name="last_name"
@@ -51,7 +55,7 @@ class SignUp extends Component {
                             value={this.state.formData.last_name || ''}
                             type="text" />
                     </div>
-                    <div className="login-panel">
+                    <div className="friends-form-panel">
                         <label>Phone #:</label>
                         <div className="required-box">
                             <Input
@@ -63,7 +67,7 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="login-panel">
+                    <div className="friends-form-panel">
                         <label>Username:</label>
                         <div className="required-box">
                             <Input
@@ -75,19 +79,18 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="login-panel">
+                    <div className="friends-form-panel">
                         <label>Password:</label>
                         <div className="required-box">
                             <Input
                                 name="password"
                                 onChange={this.onInputChange.bind(this, 'password')}
                                 type="password"
-                                value={this.state.formData.password || ''}
                                 validations={[required]} />
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="login-panel">
+                    <div className="friends-form-panel">
                         <label>Security Question:</label>
                         <div className="required-box">
                             <Input
@@ -99,28 +102,46 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="login-panel">
+                    <div className="friends-form-panel">
                         <label>Answer:</label>
                         <div className="required-box">
                             <Input
                                 name="answer"
                                 onChange={this.onInputChange.bind(this, 'answer')}
                                 type="password"
-                                value={this.state.formData.answer || ''}
                                 validations={[required]} />
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="login-panel content-right">
-                        <a href="javascript:void(0)" onClick={this._onLoginClick}>Back to Login</a>
+                    <div className="friends-form-panel">
+                        <Button type="submit">{this.props.componentData && this.props.componentData.user_id ? 'Update' : 'Add'}</Button>
+                        <button type="button" className="btn-cancel" onClick={this.formReset}>{this.props.componentData && this.props.componentData.user_id ? 'Clear All' : 'Reset'}</button>
                     </div>
-                    <div className="login-panel">
-                        <Button type="submit">Sign Up</Button>
-                        <button type="button" className="btn-cancel" onClick={this.formReset}>Reset</button>
+                    <div className="friends-form-panel content-right">
+                        <a href="javascript:void(0)" onClick={this._onFriendsListClick}>Back to Friends</a>
                     </div>
                 </Form>
             </div>
         );
+    }
+
+    _getFriendData() {
+        let userId = this.props.componentData && this.props.componentData.user_id
+        axios.post(
+            'controller/login-controller.php', {
+                action: 'getFriendData',
+                userId
+            }
+        ).then(response => {
+            const userData = response.data;
+            if(userData && userData.user_id) {
+                this.setState({formData: userData});
+            } else {
+                swal('Oops...', 'You friend migh be inactive of deleted', 'error');
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     onInputChange(field, event) {
@@ -133,11 +154,15 @@ class SignUp extends Component {
     onFormSubmit(event) {
         event.preventDefault();
 
-        let { formData } = this.state;
-        formData['action'] = 'signup';
+        let { formData } = this.state,
+        url = (this.props.componentData && this.props.componentData.user_id) ? 'controller/friends-controller.php' : 'controller/login-controller.php';
+
+        formData['action'] = (this.props.componentData && this.props.componentData.user_id) ? 'updateFriend' : 'signup';
+        formData['owner_id'] = localStorage.getItem('user_id');
+        formData['user_id'] = this.props.componentData && this.props.componentData.user_id;
 
         axios.post(
-            'controller/login-controller.php',
+            url,
             formData
         ).then(response => {
             if(response.data === "REQUIRED_ERROR") {
@@ -145,9 +170,9 @@ class SignUp extends Component {
             } else if(response.data === "EXISTS_ERROR") {
                 swal('Oops...', 'Username or Phone already exists', 'error');
             } else {
-                if(!Number.isNaN(response.data) && response.data !== null && response.data != '') {
+                if(!Number.isNaN(response.data)) {
                     swal('Wow !', 'User added successfully', 'success');
-                    this.props.onComponentChange('Login');
+                    this.props.onComponentChange('MyFriendsList');
                 }
             }
         }).catch(error => {
@@ -159,8 +184,8 @@ class SignUp extends Component {
         this.setState({formData: {}});
     }
 
-    _onLoginClick() {
-        this.props.onComponentChange('Login');
+    _onFriendsListClick() {
+        this.props.onComponentChange('MyFriendsList');
     }
 }
 

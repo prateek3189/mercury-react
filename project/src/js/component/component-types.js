@@ -26,6 +26,9 @@ module.exports = {
             case 'MyFriendsList':
                 result = require('../friends/my-friends-list.jsx');
                 break;
+            case 'AddFriend':
+                result = require('../friends/add-friend.jsx');
+                break;
             default:
                 //nop
                 break;

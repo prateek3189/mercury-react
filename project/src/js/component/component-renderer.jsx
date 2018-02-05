@@ -17,20 +17,21 @@ class ContentRenderer extends React.Component {
 
     render() {
         return (
-            <div className="main-content">
+            <div>
                 {this.getContentFactory()}
             </div>
         );
     }
 
     getContentFactory() {
-        let { onComponentChange, componentName, doLogin } = this.props;
+        let { onComponentChange, componentName, doLogin, componentData } = this.props;
         var contentElement;
 
         if(componentName){
             contentElement = React.createElement(ComponentTypes.getComponentFromName(componentName), {
                 onComponentChange,
-                doLogin
+                doLogin,
+                componentData
             });
         }
 
@@ -44,6 +45,7 @@ class ContentRenderer extends React.Component {
 
 ContentRenderer.propTypes = {
     componentName: PropTypes.string,
+    componentData: PropTypes.array,
     onComponentChange: PropTypes.func,
     doLogin: PropTypes.func
 }
