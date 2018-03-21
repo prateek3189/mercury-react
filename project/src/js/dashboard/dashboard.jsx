@@ -7,8 +7,8 @@ let _items = [{
         displayName: 'Friends',
         componentName: 'MyFriends'
     },{
-        displayName: 'Travel',
-        componentName: 'MyTravel'
+        displayName: 'Relation',
+        componentName: 'MyRelation'
     },{
         displayName: 'Profile',
         componentName: 'MyProfile'

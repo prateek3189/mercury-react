@@ -9,11 +9,11 @@
 
     switch ($action) {
         case 'fetchMyFriends':
-                $ownerId = isset($_POST['ownerId']) ? $_POST['ownerId'] : '';
+                $owner_id = isset($_POST['owner_id']) ? $_POST['owner_id'] : '';
 
                 $select = "*";
                 $table = 'users';
-                $where = "owner_id = '".$ownerId."' AND is_delete = '0'";
+                $where = "owner_id = '".$owner_id."' AND is_delete = '0'";
                 $usersData = $db->getAll($select, $table, $where);
                 echo json_encode($usersData, JSON_FORCE_OBJECT);die;
             break;
@@ -21,6 +21,7 @@
         case 'updateFriend':
             $first_name = isset($_POST['first_name']) ? $_POST['first_name'] : '';
             $last_name = isset($_POST['last_name']) ? $_POST['last_name'] : '';
+            $relation_id = isset($_POST['relation_id']) ? $_POST['relation_id'] : '';
             $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
             $username = isset($_POST['username']) ? $_POST['username'] : '';
             $password = isset($_POST['password']) ? $_POST['password'] : '';
@@ -34,6 +35,7 @@
             if(
                 $first_name == '' ||
                 $phone == '' ||
+                $relation_id == "0" ||
                 $username == '' ||
                 $security_question == ''
             ) {
@@ -48,8 +50,12 @@
                     echo "EXISTS_ERROR";die;
                 } else {
                     $table = "users";
-                    $columns = array('first_name', 'last_name', 'phone', 'username', 'security_question', 'owner_id', 'created_date', 'modified_date');
-                    $values = array($first_name, $last_name, $phone, $username, $security_question, $owner_id, $created_date, $modified_date);
+                    $columns = array('first_name', 'last_name', 'relation_id', 'phone', 'username', 'security_question', 'created_date', 'modified_date');
+                    $values = array($first_name, $last_name, $relation_id, $phone, $username, $security_question, $created_date, $modified_date);
+                    if($owner_id !== '') {
+                        array_push($columns, 'owner_id');
+                        array_push($values, $owner_id);
+                    }
                     if($password !== '') {
                         array_push($columns, 'password');
                         array_push($values, md5($password));

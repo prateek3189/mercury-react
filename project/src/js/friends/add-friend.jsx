@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Form from 'react-validation/build/form';
 import Input from 'react-validation/build/input';
 import Button from 'react-validation/build/button';
+import Select from 'react-validation/build/select';
 import validator from 'react-validation';
 import axios from 'axios';
 import swal from 'sweetalert2';
@@ -17,7 +18,8 @@ class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            formData: {}
+            formData: {},
+            relations: null
         };
 
         this._onFriendsListClick = this._onFriendsListClick.bind(this);
@@ -27,15 +29,16 @@ class SignUp extends Component {
 
     componentWillMount() {
         this._getFriendData();
+        this._getRelationsData();
     }
 
     render() {
         return (
-            <div className="add-friend-box">
+            <div className="form-box">
                 <Form
                     onSubmit={this.onFormSubmit}>
                     <h3>{this.props.componentData && this.props.componentData.user_id ? 'Edit' : 'Add'} Friend</h3>
-                    <div className="friends-form-panel">
+                    <div className="form-panel">
                         <label>First Name:</label>
                         <div className="required-box">
                             <Input
@@ -47,7 +50,7 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="friends-form-panel" name="last_name">
+                    <div className="form-panel" name="last_name">
                         <label>Last Name:</label>
                         <Input
                             name="last_name"
@@ -55,7 +58,17 @@ class SignUp extends Component {
                             value={this.state.formData.last_name || ''}
                             type="text" />
                     </div>
-                    <div className="friends-form-panel">
+                    <div className="form-panel">
+                        <label>Relation:</label>
+                        <div className="required-box">
+                            <Select value={this.state.formData.relation_id || ''} validations={[required]} onChange={this.onInputChange.bind(this, 'relation_id')}>
+                                <option value=''>--Select--</option>
+                                {this._getRelationOptions()}
+                            </Select>
+                            <span className="error-red">*</span>
+                        </div>
+                    </div>
+                    <div className="form-panel">
                         <label>Phone #:</label>
                         <div className="required-box">
                             <Input
@@ -67,7 +80,7 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="friends-form-panel">
+                    <div className="form-panel">
                         <label>Username:</label>
                         <div className="required-box">
                             <Input
@@ -79,7 +92,7 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="friends-form-panel">
+                    <div className="form-panel">
                         <label>Password:</label>
                         <div className="required-box">
                             <Input
@@ -90,7 +103,7 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="friends-form-panel">
+                    <div className="form-panel">
                         <label>Security Question:</label>
                         <div className="required-box">
                             <Input
@@ -102,7 +115,7 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="friends-form-panel">
+                    <div className="form-panel">
                         <label>Answer:</label>
                         <div className="required-box">
                             <Input
@@ -113,11 +126,11 @@ class SignUp extends Component {
                             <span className="error-red">*</span>
                         </div>
                     </div>
-                    <div className="friends-form-panel">
+                    <div className="form-panel">
                         <Button type="submit">{this.props.componentData && this.props.componentData.user_id ? 'Update' : 'Add'}</Button>
                         <button type="button" className="btn-cancel" onClick={this.formReset}>{this.props.componentData && this.props.componentData.user_id ? 'Clear All' : 'Reset'}</button>
                     </div>
-                    <div className="friends-form-panel content-right">
+                    <div className="form-panel content-right">
                         <a href="javascript:void(0)" onClick={this._onFriendsListClick}>Back to Friends</a>
                     </div>
                 </Form>
@@ -125,23 +138,57 @@ class SignUp extends Component {
         );
     }
 
+    _getRelationOptions() {
+        const { relations } = this.state;
+        let relationOption = [];
+        if(relations) {
+            for(let i = 0; i < Object.keys(relations).length; i++) {
+                relationOption.push(<option value={relations[i]['relation_id']}>{relations[i]['relation']}</option>);
+            }
+        }
+        return relationOption;
+    }
+
     _getFriendData() {
-        let userId = this.props.componentData && this.props.componentData.user_id
-        axios.post(
-            'controller/login-controller.php', {
-                action: 'getFriendData',
-                userId
-            }
-        ).then(response => {
-            const userData = response.data;
-            if(userData && userData.user_id) {
-                this.setState({formData: userData});
-            } else {
-                swal('Oops...', 'You friend migh be inactive of deleted', 'error');
-            }
-        }).catch(error => {
-            console.log(error);
-        });
+        let userId = this.props.componentData && this.props.componentData.user_id;
+        if(userId) {
+            axios.post(
+                'controller/login-controller.php', {
+                    action: 'getFriendData',
+                    userId
+                }
+            ).then(response => {
+                const userData = response.data;
+                if(userData && userData.user_id) {
+                    this.setState({formData: userData});
+                } else {
+                    swal('Oops...', 'You friend migh be inactive of deleted', 'error');
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+    }
+
+    _getRelationsData() {
+        let owner_id = localStorage.getItem('user_id');
+        if(owner_id) {
+            axios.post(
+                'controller/relations-controller.php', {
+                    action: 'fetchMyRelations',
+                    owner_id
+                }
+            ).then(response => {
+                const relationData = response.data;
+                if(relationData) {
+                    this.setState({relations: relationData});
+                } else {
+                    swal('Oops...', 'No relationships are available for this User', 'error');
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
     }
 
     onInputChange(field, event) {
@@ -171,7 +218,7 @@ class SignUp extends Component {
                 swal('Oops...', 'Username or Phone already exists', 'error');
             } else {
                 if(!Number.isNaN(response.data)) {
-                    swal('Wow !', 'User added successfully', 'success');
+                    swal('Yeah !', 'User added successfully', 'success');
                     this.props.onComponentChange('MyFriendsList');
                 }
             }

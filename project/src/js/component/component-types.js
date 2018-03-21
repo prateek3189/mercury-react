@@ -17,8 +17,8 @@ module.exports = {
             case 'MyFriends':
                 result = require('../friends/my-friends.jsx');
                 break;
-            case 'MyTravel':
-                result = require('../travel/my-travel.jsx');
+            case 'MyRelation':
+                result = require('../relation/my-relation.jsx');
                 break;
             case 'MyProfile':
                 result = require('../profile/my-profile.jsx');
@@ -26,8 +26,14 @@ module.exports = {
             case 'MyFriendsList':
                 result = require('../friends/my-friends-list.jsx');
                 break;
+            case 'MyRelationsList':
+                result = require('../relation/my-relation-list.jsx');
+                break;
             case 'AddFriend':
                 result = require('../friends/add-friend.jsx');
+                break;
+            case 'AddRelation':
+                result = require('../relation/add-relation.jsx');
                 break;
             default:
                 //nop

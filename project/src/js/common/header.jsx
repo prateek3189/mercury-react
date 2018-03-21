@@ -18,7 +18,7 @@ class Header extends React.Component {
                 <span>Mercury - React</span>
                 {isLogin === 'TRUE' ?
                     <div className="welcome-message">
-                        Welcome {user_name} | <a href="javascript:void(0)" onClick={this._doLogOut}>Logout</a>
+                        Welcome {localStorage.getItem('userName')} | <a href="javascript:void(0)" onClick={this._doLogOut}>Logout</a>
                     </div>
                 : null}
             </header>

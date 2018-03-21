@@ -146,7 +146,7 @@ class SignUp extends Component {
                 swal('Oops...', 'Username or Phone already exists', 'error');
             } else {
                 if(!Number.isNaN(response.data) && response.data !== null && response.data != '') {
-                    swal('Wow !', 'User added successfully', 'success');
+                    swal('Yeah !', 'User added successfully', 'success');
                     this.props.onComponentChange('Login');
                 }
             }

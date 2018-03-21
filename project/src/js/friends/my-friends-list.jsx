@@ -94,6 +94,10 @@ class MyFriendsList extends React.Component {
             showCancelButton: true,
             confirmButtonText: 'Yes'
         }).then((result) => {
+            debugger;
+            if(result.dismiss) {
+                return;
+            }
             // Fetch list of Friends
             let user_id = friend.user_id;
             axios.post(
@@ -124,6 +128,9 @@ class MyFriendsList extends React.Component {
             showCancelButton: true,
             confirmButtonText: 'Yes'
         }).then((result) => {
+            if(result.dismiss) {
+                return;
+            }
             // Fetch list of Friends
             let user_id = friend.user_id;
             axios.post(
@@ -148,11 +155,11 @@ class MyFriendsList extends React.Component {
 
     _getAllFriends() {
         // Fetch list of Friends
-        let ownerId = localStorage.getItem('user_id');
+        let owner_id = localStorage.getItem('user_id');
         axios.post(
             'controller/friends-controller.php', {
                 action: 'fetchMyFriends',
-                ownerId
+                owner_id
             }
         ).then(response => {
             const friendsData = response.data;
